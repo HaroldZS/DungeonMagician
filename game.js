@@ -15,11 +15,22 @@ function startGame() {
   canvas.setAttribute("width", canvasSize);
   canvas.setAttribute("height", canvasSize);
 
-  const elementSize = canvasSize / 10 - 2;
+  const elementSize = canvasSize / 10;
   game.font = elementSize + "px Verdana";
   game.textAlign = "";
 
-  for (let i = 0; i < 10; i++) {
-    game.fillText(emojis["X"], elementSize * i, elementSize);
-  }
+  const image = new Image();
+  image.src = "./assets/img/Three.png";
+
+  image.onload = function () {
+    for (let i = 0; i < 10; i++) {
+      game.drawImage(
+        image,
+        elementSize * i,
+        0,
+        elementSize,
+        elementSize
+      );
+    }
+  };
 }
