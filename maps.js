@@ -9,6 +9,17 @@ const emojis = {
   WIN: "🏆",
 };
 
+const images = {
+  "-": "./assets/img/Road.png",
+  O: "./assets/img/Gate.png",
+  X: "./assets/img/Three.png",
+  I: "./assets/img/Reward.png",
+  PLAYER: "./assets/img/Magician.png",
+  BOMB_COLLISION: "./assets/img/Three.png",
+  GAME_OVER: "./assets/img/Three.png",
+  WIN: "./assets/img/Three.png",
+};
+
 const maps = [];
 maps.push(`
     IXXXXXXXXX
