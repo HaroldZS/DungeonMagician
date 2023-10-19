@@ -23,6 +23,7 @@ function startGame() {
   const map = maps[0];
   const mapMatrix = map.match(/[IXO\-]+/g).map((a) => a.split(""));
 
+  game.clearRect(0, 0, canvasSize, canvasSize);
   mapMatrix.forEach((row, rowI) => {
     row.forEach((col, colI) => {
       const image = new Image();
@@ -31,9 +32,10 @@ function startGame() {
       const posY = elementSize * rowI;
 
       if (col == "O") {
-        playerPosition.x = posX;
-        playerPosition.y = posY;
-        movePlayer();
+        if (!playerPosition.x && !playerPosition.y) {
+          playerPosition.x = posX;
+          playerPosition.y = posY;
+        }
       }
 
       image.onload = function () {
@@ -41,6 +43,8 @@ function startGame() {
       };
     });
   });
+
+  movePlayer();
 }
 
 function setCanvasSize() {
@@ -97,14 +101,17 @@ function moveByKeys(event) {
 
 function moveUp() {
   playerPosition.y -= elementSize;
-  movePlayer();
-}
-function moveLeft() {
-  console.log("Left");
+  startGame();
 }
 function moveRight() {
-  console.log("Right");
+  playerPosition.x += elementSize;
+  startGame();
 }
 function moveDown() {
-  console.log("Down");
+  playerPosition.y += elementSize;
+  startGame();
+}
+function moveLeft() {
+  playerPosition.x -= elementSize;
+  startGame();
 }
