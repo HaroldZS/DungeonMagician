@@ -14,7 +14,7 @@ const images = {
   O: "./assets/img/Gate.png",
   X: "./assets/img/Three.png",
   I: "./assets/img/Reward.png",
-  PLAYER: "./assets/img/Magician.png",
+  PLAYER: "./assets/img/DM-Magician.png",
   BOMB_COLLISION: "./assets/img/Three.png",
   GAME_OVER: "./assets/img/Three.png",
   WIN: "./assets/img/Three.png",

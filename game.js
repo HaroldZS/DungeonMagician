@@ -8,6 +8,11 @@ const btnDown = document.querySelector("#down");
 let canvasSize;
 let elementSize;
 
+const playerPosition = {
+  x: undefined,
+  y: undefined,
+};
+
 window.addEventListener("load", setCanvasSize);
 window.addEventListener("resize", setCanvasSize);
 
@@ -24,6 +29,13 @@ function startGame() {
       image.src = images[col];
       const posX = elementSize * colI;
       const posY = elementSize * rowI;
+
+      if (col == "O") {
+        playerPosition.x = posX;
+        playerPosition.y = posY;
+        movePlayer();
+      }
+
       image.onload = function () {
         game.drawImage(image, posX, posY, elementSize, elementSize);
       };
@@ -44,6 +56,20 @@ function setCanvasSize() {
   elementSize = canvasSize / 10;
 
   startGame();
+}
+
+function movePlayer() {
+  const character = new Image();
+  character.src = images["PLAYER"];
+  character.onload = function () {
+    game.drawImage(
+      character,
+      playerPosition.x,
+      playerPosition.y,
+      elementSize,
+      elementSize
+    );
+  };
 }
 
 window.addEventListener("keydown", moveByKeys);
@@ -70,7 +96,8 @@ function moveByKeys(event) {
 }
 
 function moveUp() {
-  console.log("Up");
+  playerPosition.y -= elementSize;
+  movePlayer();
 }
 function moveLeft() {
   console.log("Left");
