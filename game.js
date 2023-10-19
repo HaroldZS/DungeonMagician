@@ -1,5 +1,9 @@
 const canvas = document.querySelector("#game");
 const game = canvas.getContext("2d");
+const btnUp = document.querySelector("#up");
+const btnLeft = document.querySelector("#left");
+const btnRight = document.querySelector("#right");
+const btnDown = document.querySelector("#down");
 
 let canvasSize;
 let elementSize;
@@ -11,28 +15,20 @@ function startGame() {
   game.font = elementSize + "px Verdana";
   game.textAlign = "";
 
-  const map = maps[1];
-  const mapMatrix = map
-    .trim()
-    .split("\n")
-    .map((row) => row.trim().split(""));
-  console.log(mapMatrix);
+  const map = maps[0];
+  const mapMatrix = map.match(/[IXO\-]+/g).map((a) => a.split(""));
 
-  for (let i = 0; i < mapMatrix.length; i++) {
-    for (let j = 0; j < mapMatrix[i].length; j++) {
+  mapMatrix.forEach((row, rowI) => {
+    row.forEach((col, colI) => {
       const image = new Image();
-      image.src = images[mapMatrix[i][j]];
+      image.src = images[col];
+      const posX = elementSize * colI;
+      const posY = elementSize * rowI;
       image.onload = function () {
-        game.drawImage(
-          image,
-          elementSize * j,
-          elementSize * i,
-          elementSize,
-          elementSize
-        );
+        game.drawImage(image, posX, posY, elementSize, elementSize);
       };
-    }
-  }
+    });
+  });
 }
 
 function setCanvasSize() {
@@ -48,4 +44,40 @@ function setCanvasSize() {
   elementSize = canvasSize / 10;
 
   startGame();
+}
+
+window.addEventListener("keydown", moveByKeys);
+btnUp.addEventListener("click", moveUp);
+btnLeft.addEventListener("click", moveLeft);
+btnRight.addEventListener("click", moveRight);
+btnDown.addEventListener("click", moveDown);
+
+function moveByKeys(event) {
+  switch (event.key) {
+    case "ArrowUp":
+      moveUp();
+      break;
+    case "ArrowRight":
+      moveRight();
+      break;
+    case "ArrowDown":
+      moveDown();
+      break;
+    case "ArrowLeft":
+      moveLeft();
+      break;
+  }
+}
+
+function moveUp() {
+  console.log("Up");
+}
+function moveLeft() {
+  console.log("Left");
+}
+function moveRight() {
+  console.log("Right");
+}
+function moveDown() {
+  console.log("Down");
 }
