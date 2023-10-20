@@ -8,9 +8,11 @@ const btnDown = document.querySelector("#down");
 let canvasSize;
 let elementSize;
 let mapMatrix;
-let playerPosition = { x: undefined, y: undefined };
 let characterImage;
 let loadedImages = {};
+let playerPosition = { x: undefined, y: undefined };
+let giftPosition = { x: undefined, y: undefined };
+let environmentPositions = [];
 
 function loadImage(src) {
   const image = new Image();
@@ -42,12 +44,24 @@ function renderMap() {
         playerPosition.x = posX;
         playerPosition.y = posY;
       }
+      if (col === "I") {
+        giftPosition.x = posX;
+        giftPosition.y = posY;
+      }
+      if (col === "X") {
+        environmentPositions.push({
+          x: Math.floor(posX),
+          y: Math.floor(posY),
+        });
+      }
+
       game.drawImage(image, posX, posY, elementSize, elementSize);
     });
   });
 }
 
 function startGame() {
+  environmentPositions = [];
   renderMap();
   movePlayer();
 }
@@ -68,7 +82,25 @@ function setCanvasSize() {
 }
 
 function movePlayer() {
-  characterImage = loadedImages[images["PLAYER"]];
+  const giftCollisionX =
+    Math.floor(giftPosition.x) == Math.floor(playerPosition.x);
+  const giftCollisionY =
+    Math.floor(giftPosition.y) == Math.floor(playerPosition.y);
+  const giftCollision = giftCollisionX && giftCollisionY;
+  if (giftCollision) {
+    console.log("New Level unlocked");
+  }
+  const envCollision = environmentPositions.find((env) => {
+    const envCollisionX = env.x == Math.floor(playerPosition.x);
+    const envCollisionY = env.y == Math.floor(playerPosition.y);
+    return envCollisionX && envCollisionY;
+  });
+
+  if (envCollision) {
+    console.log("Collision");
+  }
+
+  const characterImage = loadedImages[images["PLAYER"]];
   game.drawImage(
     characterImage,
     playerPosition.x,
@@ -131,7 +163,7 @@ function moveLeft() {
 
 window.addEventListener("load", () => {
   loadAllImages().then(() => {
-    const map = maps[0];
+    const map = maps[1];
     mapMatrix = map.match(/[IXO\-]+/g).map((a) => a.split(""));
     setCanvasSize();
     startGame();
