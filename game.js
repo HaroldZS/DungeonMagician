@@ -7,43 +7,49 @@ const btnDown = document.querySelector("#down");
 
 let canvasSize;
 let elementSize;
+let mapMatrix;
+let playerPosition = { x: undefined, y: undefined };
+let characterImage;
+let loadedImages = {};
+let spawnPosition = { x: undefined, y: undefined };
 
-const playerPosition = {
-  x: undefined,
-  y: undefined,
-};
+function loadImage(src) {
+  const image = new Image();
+  image.src = src;
+  return image;
+}
 
-window.addEventListener("load", setCanvasSize);
-window.addEventListener("resize", setCanvasSize);
-
-function startGame() {
-  game.font = elementSize + "px Verdana";
-  game.textAlign = "";
-
-  const map = maps[0];
-  const mapMatrix = map.match(/[IXO\-]+/g).map((a) => a.split(""));
-
-  game.clearRect(0, 0, canvasSize, canvasSize);
-  mapMatrix.forEach((row, rowI) => {
-    row.forEach((col, colI) => {
-      const image = new Image();
-      image.src = images[col];
-      const posX = elementSize * colI;
-      const posY = elementSize * rowI;
-
-      if (col == "O") {
-        if (!playerPosition.x && !playerPosition.y) {
-          playerPosition.x = posX;
-          playerPosition.y = posY;
-        }
-      }
-
-      image.onload = function () {
-        game.drawImage(image, posX, posY, elementSize, elementSize);
-      };
+function loadAllImages() {
+  const imagePaths = Object.values(images);
+  const promises = imagePaths.map((src) => {
+    const img = loadImage(src);
+    loadedImages[src] = img;
+    return new Promise((resolve) => {
+      img.onload = resolve;
     });
   });
+  return Promise.all(promises);
+}
 
+function renderMap() {
+  game.clearRect(0, 0, canvasSize, canvasSize);
+
+  mapMatrix.forEach((row, rowI) => {
+    row.forEach((col, colI) => {
+      const image = loadedImages[images[col]];
+      const posX = colI * elementSize;
+      const posY = rowI * elementSize;
+      if (col === "O") {
+        spawnPosition.x = posX;
+        spawnPosition.y = posY;
+      }
+      game.drawImage(image, posX, posY, elementSize, elementSize);
+    });
+  });
+}
+
+function startGame() {
+  renderMap();
   movePlayer();
 }
 
@@ -63,17 +69,18 @@ function setCanvasSize() {
 }
 
 function movePlayer() {
-  const character = new Image();
-  character.src = images["PLAYER"];
-  character.onload = function () {
-    game.drawImage(
-      character,
-      playerPosition.x,
-      playerPosition.y,
-      elementSize,
-      elementSize
-    );
-  };
+  characterImage = loadedImages[images["PLAYER"]];
+  if (!playerPosition.x && !playerPosition.y) {
+    playerPosition.x = spawnPosition.x;
+    playerPosition.y = spawnPosition.y;
+  }
+  game.drawImage(
+    characterImage,
+    playerPosition.x,
+    playerPosition.y,
+    elementSize,
+    elementSize
+  );
 }
 
 window.addEventListener("keydown", moveByKeys);
@@ -100,18 +107,38 @@ function moveByKeys(event) {
 }
 
 function moveUp() {
-  playerPosition.y -= elementSize;
-  startGame();
+  if (playerPosition.y > 0) {
+    playerPosition.y -= elementSize;
+    startGame();
+  }
 }
+
 function moveRight() {
-  playerPosition.x += elementSize;
-  startGame();
+  if (playerPosition.x + elementSize < canvasSize) {
+    playerPosition.x += elementSize;
+    startGame();
+  }
 }
+
 function moveDown() {
-  playerPosition.y += elementSize;
-  startGame();
+  if (playerPosition.y + elementSize < canvasSize) {
+    playerPosition.y += elementSize;
+    startGame();
+  }
 }
+
 function moveLeft() {
-  playerPosition.x -= elementSize;
-  startGame();
+  if (playerPosition.x > 0) {
+    playerPosition.x -= elementSize;
+    startGame();
+  }
 }
+
+window.addEventListener("load", () => {
+  loadAllImages().then(() => {
+    const map = maps[0];
+    mapMatrix = map.match(/[IXO\-]+/g).map((a) => a.split(""));
+    setCanvasSize();
+    startGame();
+  });
+});
