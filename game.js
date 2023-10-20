@@ -102,28 +102,28 @@ function moveByKeys(event) {
 }
 
 function moveUp() {
-  if (playerPosition.y > 0) {
+  if (Math.floor(playerPosition.y) >= Math.floor(elementSize)) {
     playerPosition.y -= elementSize;
     startGame();
   }
 }
 
 function moveRight() {
-  if (playerPosition.x + elementSize < canvasSize) {
+  if (Math.floor(playerPosition.x) < Math.floor(canvasSize - elementSize)) {
     playerPosition.x += elementSize;
     startGame();
   }
 }
 
 function moveDown() {
-  if (playerPosition.y + elementSize < canvasSize) {
+  if (Math.floor(playerPosition.y) < Math.floor(canvasSize - elementSize)) {
     playerPosition.y += elementSize;
     startGame();
   }
 }
 
 function moveLeft() {
-  if (playerPosition.x > 0) {
+  if (Math.floor(playerPosition.x) >= Math.floor(elementSize)) {
     playerPosition.x -= elementSize;
     startGame();
   }
