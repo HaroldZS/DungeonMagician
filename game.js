@@ -11,7 +11,6 @@ let mapMatrix;
 let playerPosition = { x: undefined, y: undefined };
 let characterImage;
 let loadedImages = {};
-let spawnPosition = { x: undefined, y: undefined };
 
 function loadImage(src) {
   const image = new Image();
@@ -39,9 +38,9 @@ function renderMap() {
       const image = loadedImages[images[col]];
       const posX = colI * elementSize;
       const posY = rowI * elementSize;
-      if (col === "O") {
-        spawnPosition.x = posX;
-        spawnPosition.y = posY;
+      if (col === "O" && !playerPosition.x && !playerPosition.y) {
+        playerPosition.x = posX;
+        playerPosition.y = posY;
       }
       game.drawImage(image, posX, posY, elementSize, elementSize);
     });
@@ -70,10 +69,6 @@ function setCanvasSize() {
 
 function movePlayer() {
   characterImage = loadedImages[images["PLAYER"]];
-  if (!playerPosition.x && !playerPosition.y) {
-    playerPosition.x = spawnPosition.x;
-    playerPosition.y = spawnPosition.y;
-  }
   game.drawImage(
     characterImage,
     playerPosition.x,
