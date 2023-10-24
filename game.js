@@ -14,6 +14,7 @@ let playerPosition = { x: undefined, y: undefined };
 let giftPosition = { x: undefined, y: undefined };
 let environmentPositions = [];
 let level = 0;
+let radar = {};
 
 function loadImage(src) {
   const image = new Image();
@@ -53,6 +54,7 @@ function renderMap() {
         environmentPositions.push({
           x: Math.round(posX),
           y: Math.round(posY),
+          sign: "X",
         });
       }
 
@@ -83,14 +85,18 @@ function setCanvasSize() {
 }
 
 function movePlayer() {
+  radar = magicRadar();
+
   const giftCollisionX =
     Math.round(giftPosition.x) == Math.round(playerPosition.x);
   const giftCollisionY =
     Math.round(giftPosition.y) == Math.round(playerPosition.y);
   const giftCollision = giftCollisionX && giftCollisionY;
+
   if (giftCollision) {
     levelCompleted();
   }
+
   const envCollision = environmentPositions.find((env) => {
     const envCollisionX = env.x == Math.round(playerPosition.x);
     const envCollisionY = env.y == Math.round(playerPosition.y);
@@ -146,28 +152,40 @@ function moveByKeys(event) {
 }
 
 function moveUp() {
-  if (Math.round(playerPosition.y) >= Math.round(elementSize)) {
+  if (
+    Math.round(playerPosition.y) >= Math.round(elementSize) &&
+    radar.up != "X"
+  ) {
     playerPosition.y -= elementSize;
     startGame();
   }
 }
 
 function moveRight() {
-  if (Math.round(playerPosition.x) < Math.round(canvasSize - elementSize)) {
+  if (
+    Math.round(playerPosition.x) < Math.round(canvasSize - elementSize) &&
+    radar.right != "X"
+  ) {
     playerPosition.x += elementSize;
     startGame();
   }
 }
 
 function moveDown() {
-  if (Math.round(playerPosition.y) < Math.round(canvasSize - elementSize)) {
+  if (
+    Math.round(playerPosition.y) < Math.round(canvasSize - elementSize) &&
+    radar.down != "X"
+  ) {
     playerPosition.y += elementSize;
     startGame();
   }
 }
 
 function moveLeft() {
-  if (Math.round(playerPosition.x) >= Math.round(elementSize)) {
+  if (
+    Math.round(playerPosition.x) >= Math.round(elementSize) &&
+    radar.left != "X"
+  ) {
     playerPosition.x -= elementSize;
     startGame();
   }
@@ -181,3 +199,49 @@ window.addEventListener("load", () => {
     startGame();
   });
 });
+
+function magicRadar() {
+  const nearCollisions = {
+    up: undefined,
+    right: undefined,
+    down: undefined,
+    left: undefined,
+  };
+
+  environmentPositions.forEach((pos) => {
+    const upWay = {
+      x: Math.round(playerPosition.x),
+      y: Math.round(playerPosition.y - elementSize),
+    };
+    const rightWay = {
+      x: Math.round(playerPosition.x + elementSize),
+      y: Math.round(playerPosition.y),
+    };
+    const downWay = {
+      x: Math.round(playerPosition.x),
+      y: Math.round(playerPosition.y + elementSize),
+    };
+    const leftWay = {
+      x: Math.round(playerPosition.x - elementSize),
+      y: Math.round(playerPosition.y),
+    };
+
+    if (upWay.x == pos.x && upWay.y == pos.y) {
+      nearCollisions.up = pos.sign;
+    }
+
+    if (rightWay.x == pos.x && rightWay.y == pos.y) {
+      nearCollisions.right = pos.sign;
+    }
+
+    if (downWay.x == pos.x && downWay.y == pos.y) {
+      nearCollisions.down = pos.sign;
+    }
+
+    if (leftWay.x == pos.x && leftWay.y == pos.y) {
+      nearCollisions.left = pos.sign;
+    }
+  });
+
+  return nearCollisions;
+}
