@@ -13,6 +13,7 @@ let loadedImages = {};
 let playerPosition = { x: undefined, y: undefined };
 let giftPosition = { x: undefined, y: undefined };
 let environmentPositions = [];
+let level = 0;
 
 function loadImage(src) {
   const image = new Image();
@@ -50,8 +51,8 @@ function renderMap() {
       }
       if (col === "X") {
         environmentPositions.push({
-          x: Math.floor(posX),
-          y: Math.floor(posY),
+          x: Math.round(posX),
+          y: Math.round(posY),
         });
       }
 
@@ -83,16 +84,16 @@ function setCanvasSize() {
 
 function movePlayer() {
   const giftCollisionX =
-    Math.floor(giftPosition.x) == Math.floor(playerPosition.x);
+    Math.round(giftPosition.x) == Math.round(playerPosition.x);
   const giftCollisionY =
-    Math.floor(giftPosition.y) == Math.floor(playerPosition.y);
+    Math.round(giftPosition.y) == Math.round(playerPosition.y);
   const giftCollision = giftCollisionX && giftCollisionY;
   if (giftCollision) {
-    console.log("New Level unlocked");
+    levelCompleted();
   }
   const envCollision = environmentPositions.find((env) => {
-    const envCollisionX = env.x == Math.floor(playerPosition.x);
-    const envCollisionY = env.y == Math.floor(playerPosition.y);
+    const envCollisionX = env.x == Math.round(playerPosition.x);
+    const envCollisionY = env.y == Math.round(playerPosition.y);
     return envCollisionX && envCollisionY;
   });
 
@@ -108,6 +109,17 @@ function movePlayer() {
     elementSize,
     elementSize
   );
+}
+
+function levelCompleted() {
+  console.log("You got it!");
+  level++;
+  if (level < maps.length) {
+    const customLoadEvent = new Event("load");
+    window.dispatchEvent(customLoadEvent);
+  } else {
+    console.log("Game completed!");
+  }
 }
 
 window.addEventListener("keydown", moveByKeys);
@@ -134,28 +146,28 @@ function moveByKeys(event) {
 }
 
 function moveUp() {
-  if (Math.floor(playerPosition.y) >= Math.floor(elementSize)) {
+  if (Math.round(playerPosition.y) >= Math.round(elementSize)) {
     playerPosition.y -= elementSize;
     startGame();
   }
 }
 
 function moveRight() {
-  if (Math.floor(playerPosition.x) < Math.floor(canvasSize - elementSize)) {
+  if (Math.round(playerPosition.x) < Math.round(canvasSize - elementSize)) {
     playerPosition.x += elementSize;
     startGame();
   }
 }
 
 function moveDown() {
-  if (Math.floor(playerPosition.y) < Math.floor(canvasSize - elementSize)) {
+  if (Math.round(playerPosition.y) < Math.round(canvasSize - elementSize)) {
     playerPosition.y += elementSize;
     startGame();
   }
 }
 
 function moveLeft() {
-  if (Math.floor(playerPosition.x) >= Math.floor(elementSize)) {
+  if (Math.round(playerPosition.x) >= Math.round(elementSize)) {
     playerPosition.x -= elementSize;
     startGame();
   }
@@ -163,7 +175,7 @@ function moveLeft() {
 
 window.addEventListener("load", () => {
   loadAllImages().then(() => {
-    const map = maps[1];
+    const map = maps[level];
     mapMatrix = map.match(/[IXO\-]+/g).map((a) => a.split(""));
     setCanvasSize();
     startGame();
