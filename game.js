@@ -194,7 +194,7 @@ function moveLeft() {
 window.addEventListener("load", () => {
   loadAllImages().then(() => {
     const map = maps[level];
-    mapMatrix = map.match(/[IXO\-]+/g).map((a) => a.split(""));
+    mapMatrix = map.match(/[IXOM\-]+/g).map((a) => a.split(""));
     setCanvasSize();
     startGame();
   });

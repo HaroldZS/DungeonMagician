@@ -1,20 +1,10 @@
-const emojis = {
-  "-": " ",
-  O: "🚪",
-  X: "💣",
-  I: "🎁",
-  PLAYER: "💀",
-  BOMB_COLLISION: "🔥",
-  GAME_OVER: "👎",
-  WIN: "🏆",
-};
-
 const images = {
   "-": "./assets/img/Road.png",
+  M: "./assets/img/MagicMine.png",
   O: "./assets/img/Gate.png",
   X: "./assets/img/Three.png",
   I: "./assets/img/Reward.png",
-  PLAYER: "./assets/img/DM-Magician.png",
+  PLAYER: "./assets/img/DM-Magician.png ",
   BOMB_COLLISION: "./assets/img/Three.png",
   GAME_OVER: "./assets/img/Three.png",
   WIN: "./assets/img/Three.png",
@@ -37,10 +27,10 @@ maps.push(`
     O--XXXXXXX
     X--XXXXXXX
     XX----XXXX
-    X--XX-XXXX
+    X-MXX-XXXX
     X-XXX--XXX
     X-XXXX-XXX
-    XX--XX--XX
+    XX-MXX--XX
     XX--XXX-XX
     XXXX---IXX
     XXXXXXXXXX
