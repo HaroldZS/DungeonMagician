@@ -13,6 +13,7 @@ let loadedImages = {};
 let playerPosition = { x: undefined, y: undefined };
 let giftPosition = { x: undefined, y: undefined };
 let environmentPositions = [];
+let minePositions = [];
 let level = 0;
 let radar = {};
 
@@ -57,6 +58,13 @@ function renderMap() {
           sign: "X",
         });
       }
+      if (col === "M") {
+        minePositions.push({
+          x: Math.round(posX),
+          y: Math.round(posY),
+          sign: "M",
+        });
+      }
 
       game.drawImage(image, posX, posY, elementSize, elementSize);
     });
@@ -65,6 +73,7 @@ function renderMap() {
 
 function startGame() {
   environmentPositions = [];
+  minePositions = [];
   renderMap();
   movePlayer();
 }
@@ -97,14 +106,15 @@ function movePlayer() {
     levelCompleted();
   }
 
-  const envCollision = environmentPositions.find((env) => {
-    const envCollisionX = env.x == Math.round(playerPosition.x);
-    const envCollisionY = env.y == Math.round(playerPosition.y);
-    return envCollisionX && envCollisionY;
+  const mineCollision = minePositions.find((mine) => {
+    const mineCollisionX = mine.x == Math.round(playerPosition.x);
+    const mineCollisionY = mine.y == Math.round(playerPosition.y);
+    return mineCollisionX && mineCollisionY;
   });
 
-  if (envCollision) {
-    console.log("Collision");
+  if (mineCollision) {
+    console.log("Mine Collision");
+    levelFailed();
   }
 
   const characterImage = loadedImages[images["PLAYER"]];
@@ -244,4 +254,10 @@ function magicRadar() {
   });
 
   return nearCollisions;
+}
+
+function levelFailed() {
+  playerPosition.x = undefined;
+  playerPosition.y = undefined;
+  startGame();
 }
