@@ -15,6 +15,7 @@ let giftPosition = { x: undefined, y: undefined };
 let environmentPositions = [];
 let minePositions = [];
 let level = 0;
+let lives = 3;
 let radar = {};
 
 function loadImage(src) {
@@ -113,7 +114,6 @@ function movePlayer() {
   });
 
   if (mineCollision) {
-    console.log("Mine Collision");
     levelFailed();
   }
 
@@ -131,8 +131,7 @@ function levelCompleted() {
   console.log("You got it!");
   level++;
   if (level < maps.length) {
-    const customLoadEvent = new Event("load");
-    window.dispatchEvent(customLoadEvent);
+    reload();
   } else {
     console.log("Game completed!");
   }
@@ -257,7 +256,20 @@ function magicRadar() {
 }
 
 function levelFailed() {
+  lives--;
   playerPosition.x = undefined;
   playerPosition.y = undefined;
+
+  if (lives === 0) {
+    level = 0;
+    lives = 3;
+    reload();
+  }
+
   startGame();
+}
+
+function reload() {
+  const customLoadEvent = new Event("load");
+  window.dispatchEvent(customLoadEvent);
 }
