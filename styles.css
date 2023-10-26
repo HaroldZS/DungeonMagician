@@ -1,7 +1,7 @@
 body {
-  background-color: indigo;
-  color: #fff;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: #1f1f1f;
+  color: #FF8026;
+  font-family: "Press Start 2P";
   margin: 0;
   padding: 0;
 }
@@ -30,9 +30,10 @@ canvas {
 }
 
 button {
-  background-color: #fdef05;
+  background-color: #1f1f1f;
   border-radius: 8px;
   border-color: #ff6600;
+  color: #FF8026;
   font-family: inherit;
   margin: 0;
   padding: 5px 20px;
@@ -44,9 +45,9 @@ button:not(:last-child) {
 }
 
 .messages {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 10px;
   width: 80%;
   max-width: 460px;
 }
@@ -54,12 +55,13 @@ button:not(:last-child) {
 p {
   display: block;
   margin: 0;
+  margin-bottom: 5px;
   width: 100%;
 }
 
 @media (max-width: 440px) {
   button {
-    margin-top: 25px;
+    margin-top: 5px;
   }
 
   #up,
@@ -67,4 +69,12 @@ p {
     margin-left: 100%;
     margin-right: 100%;
   }
+
+  .messages {
+    grid-template-columns: 1fr;
+  }
+}
+
+p > span {
+  color: white
 }
