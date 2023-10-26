@@ -4,6 +4,10 @@ const btnUp = document.querySelector("#up");
 const btnLeft = document.querySelector("#left");
 const btnRight = document.querySelector("#right");
 const btnDown = document.querySelector("#down");
+const liveSpan = document.querySelector("#lives");
+const timeSpan = document.querySelector("#time");
+const recordSpan = document.querySelector("#record");
+const result = document.querySelector("#result");
 
 let canvasSize;
 let elementSize;
@@ -17,6 +21,8 @@ let minePositions = [];
 let level = 0;
 let lives = 3;
 let radar = {};
+let startTime;
+let intervalTime;
 
 function loadImage(src) {
   const image = new Image();
@@ -37,6 +43,14 @@ function loadAllImages() {
 }
 
 function renderMap() {
+  showLives();
+
+  if (!startTime) {
+    startTime = Date.now();
+    intervalTime = setInterval(showTime, 100);
+    showRecord();
+  }
+
   game.clearRect(0, 0, canvasSize, canvasSize);
 
   mapMatrix.forEach((row, rowI) => {
@@ -128,12 +142,25 @@ function movePlayer() {
 }
 
 function levelCompleted() {
-  console.log("You got it!");
   level++;
   if (level < maps.length) {
     reload();
   } else {
-    console.log("Game completed!");
+    clearInterval(intervalTime);
+    const recordTime = localStorage.getItem("record_time");
+    const playerTime = Date.now() - startTime;
+
+    if (recordTime) {
+      if (recordTime >= playerTime) {
+        localStorage.setItem("record_time", playerTime);
+        result.innerHTML = "New Record!";
+      } else {
+        result.innerHTML = "Undefeated record";
+      }
+    } else {
+      localStorage.setItem("record_time", playerTime);
+      result.innerHTML = "Let's go for a new record!";
+    }
   }
 }
 
@@ -263,6 +290,7 @@ function levelFailed() {
   if (lives === 0) {
     level = 0;
     lives = 3;
+    startTime = undefined;
     reload();
   }
 
@@ -272,4 +300,16 @@ function levelFailed() {
 function reload() {
   const customLoadEvent = new Event("load");
   window.dispatchEvent(customLoadEvent);
+}
+
+function showLives() {
+  liveSpan.innerHTML = "❤".repeat(lives);
+}
+
+function showTime() {
+  timeSpan.innerHTML = Date.now() - startTime;
+}
+
+function showRecord() {
+  recordSpan.innerHTML = localStorage.getItem("record_time");
 }
