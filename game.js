@@ -139,6 +139,14 @@ function movePlayer() {
     elementSize,
     elementSize
   );
+
+  game.font = "24px 'Press Start 2P', sans-serif";
+  game.textAlign = "center";
+  game.textBaseline = "middle";
+  mineRadar("Up-Right", 1);
+  mineRadar("Down-Right", 2);
+  mineRadar("Down-Left", 3);
+  mineRadar("Up-Left", 4);
 }
 
 function levelCompleted() {
@@ -312,4 +320,37 @@ function showTime() {
 
 function showRecord() {
   recordSpan.innerHTML = localStorage.getItem("record_time");
+}
+
+function mineRadar(path, value) {
+  switch (path) {
+    case "Up-Right":
+      game.fillText(
+        value,
+        playerPosition.x + (3 * elementSize) / 2,
+        playerPosition.y - elementSize / 2
+      );
+      break;
+    case "Down-Right":
+      game.fillText(
+        value,
+        playerPosition.x + (3 * elementSize) / 2,
+        playerPosition.y + (3 * elementSize) / 2
+      );
+      break;
+    case "Down-Left":
+      game.fillText(
+        value,
+        playerPosition.x - elementSize / 2,
+        playerPosition.y + (3 * elementSize) / 2
+      );
+      break;
+    case "Up-Left":
+      game.fillText(
+        value,
+        playerPosition.x - elementSize / 2,
+        playerPosition.y - elementSize / 2
+      );
+      break;
+  }
 }
