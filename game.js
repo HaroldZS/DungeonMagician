@@ -263,6 +263,8 @@ function magicRadar() {
     upLeft: undefined,
   };
 
+  radar = {};
+
   environmentPositions.forEach((pos) => {
     const upWay = {
       x: Math.round(playerPosition.x),
@@ -314,7 +316,9 @@ function magicRadar() {
       if (leftWay.x == pos.x && leftWay.y == pos.y) {
         nearCollisions.left = pos.sign;
       }
-    } else {
+    }
+
+    if (pos.sign == "-") {
       if (UpRightWay.x == pos.x && UpRightWay.y == pos.y) {
         nearCollisions.upRight = true;
       }
@@ -410,39 +414,39 @@ function minesReveal() {
   };
 
   minePositions.forEach((pos) => {
-    const upWay = {
+    const uWay = {
       x: Math.round(playerPosition.x),
       y: Math.round(playerPosition.y - elementSize),
     };
-    const rightWay = {
+    const rWay = {
       x: Math.round(playerPosition.x + elementSize),
       y: Math.round(playerPosition.y),
     };
-    const downWay = {
+    const dWay = {
       x: Math.round(playerPosition.x),
       y: Math.round(playerPosition.y + elementSize),
     };
-    const leftWay = {
+    const lWay = {
       x: Math.round(playerPosition.x - elementSize),
       y: Math.round(playerPosition.y),
     };
 
-    if (upWay.x == pos.x && upWay.y == pos.y) {
+    if (uWay.x == pos.x && uWay.y == pos.y) {
       nearMines.upRight += 1;
       nearMines.upLeft += 1;
     }
 
-    if (rightWay.x == pos.x && rightWay.y == pos.y) {
+    if (rWay.x == pos.x && rWay.y == pos.y) {
       nearMines.upRight += 1;
       nearMines.downRight += 1;
     }
 
-    if (downWay.x == pos.x && downWay.y == pos.y) {
+    if (dWay.x == pos.x && dWay.y == pos.y) {
       nearMines.downRight += 1;
       nearMines.downLeft += 1;
     }
 
-    if (leftWay.x == pos.x && leftWay.y == pos.y) {
+    if (lWay.x == pos.x && lWay.y == pos.y) {
       nearMines.upLeft += 1;
       nearMines.downLeft += 1;
     }

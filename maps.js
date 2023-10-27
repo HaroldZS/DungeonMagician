@@ -1,6 +1,6 @@
 const images = {
   "-": "./assets/img/Road.png",
-  M: "./assets/img/MagicMine.png",
+  M: "./assets/img/HiddenMagicMine.png",
   O: "./assets/img/Gate.png",
   X: "./assets/img/Three.png",
   I: "./assets/img/Reward.png",
