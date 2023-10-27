@@ -18,12 +18,13 @@ let playerPosition = { x: undefined, y: undefined };
 let giftPosition = { x: undefined, y: undefined };
 let environmentPositions = [];
 let minePositions = [];
-let level = 2;
+let level = 0;
 let lives = 3;
 let radar = {};
 let minesField = {};
 let startTime;
 let intervalTime;
+let collided = false;
 
 function loadImage(src) {
   const image = new Image();
@@ -155,6 +156,7 @@ function movePlayer() {
   );
 
   if (mineCollision) {
+    collided = true;
     const mineImage = loadedImages[images["MINE"]];
     game.drawImage(
       mineImage,
@@ -165,6 +167,7 @@ function movePlayer() {
     );
     setTimeout(() => {
       levelFailed();
+      collided = false;
     }, 1000);
   }
 }
@@ -218,7 +221,8 @@ function moveByKeys(event) {
 function moveUp() {
   if (
     Math.round(playerPosition.y) >= Math.round(elementSize) &&
-    radar.up != "X"
+    radar.up != "X" &&
+    !collided
   ) {
     playerPosition.y -= elementSize;
     startGame();
@@ -228,7 +232,8 @@ function moveUp() {
 function moveRight() {
   if (
     Math.round(playerPosition.x) < Math.round(canvasSize - elementSize) &&
-    radar.right != "X"
+    radar.right != "X" &&
+    !collided
   ) {
     playerPosition.x += elementSize;
     startGame();
@@ -238,7 +243,8 @@ function moveRight() {
 function moveDown() {
   if (
     Math.round(playerPosition.y) < Math.round(canvasSize - elementSize) &&
-    radar.down != "X"
+    radar.down != "X" &&
+    !collided
   ) {
     playerPosition.y += elementSize;
     startGame();
@@ -248,7 +254,8 @@ function moveDown() {
 function moveLeft() {
   if (
     Math.round(playerPosition.x) >= Math.round(elementSize) &&
-    radar.left != "X"
+    radar.left != "X" &&
+    !collided
   ) {
     playerPosition.x -= elementSize;
     startGame();
@@ -366,7 +373,7 @@ function levelFailed() {
     level = 0;
     lives = 3;
     startTime = undefined;
-    reload();
+    location.reload();
   }
 
   startGame();
