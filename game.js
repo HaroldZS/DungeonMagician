@@ -142,10 +142,6 @@ function movePlayer() {
     return mineCollisionX && mineCollisionY;
   });
 
-  if (mineCollision) {
-    levelFailed();
-  }
-
   const characterImage = loadedImages[images["PLAYER"]];
   game.drawImage(
     characterImage,
@@ -154,6 +150,20 @@ function movePlayer() {
     elementSize,
     elementSize
   );
+
+  if (mineCollision) {
+    const mineImage = loadedImages[images["MINE"]];
+    game.drawImage(
+      mineImage,
+      playerPosition.x,
+      playerPosition.y,
+      elementSize,
+      elementSize
+    );
+    setTimeout(() => {
+      levelFailed();
+    }, 1000);
+  }
 }
 
 function levelCompleted() {
@@ -262,6 +272,8 @@ function magicRadar() {
     downLeft: undefined,
     upLeft: undefined,
   };
+
+  radar = {};
 
   environmentPositions.forEach((pos) => {
     const upWay = {
