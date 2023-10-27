@@ -263,8 +263,6 @@ function magicRadar() {
     upLeft: undefined,
   };
 
-  radar = {};
-
   environmentPositions.forEach((pos) => {
     const upWay = {
       x: Math.round(playerPosition.x),
