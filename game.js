@@ -117,7 +117,6 @@ function setCanvasSize() {
 }
 
 function movePlayer() {
-  radar = {};
   radar = magicRadar();
   game.font = "24px 'Press Start 2P', sans-serif";
   game.textAlign = "center";
@@ -126,10 +125,14 @@ function movePlayer() {
   minesField = minesReveal();
   minePrediction();
 
-  const giftCollisionX =
-    Math.round(giftPosition.x) == Math.round(playerPosition.x);
-  const giftCollisionY =
-    Math.round(giftPosition.y) == Math.round(playerPosition.y);
+  const giftCollisionX = valueRange(
+    Math.round(giftPosition.x),
+    Math.round(playerPosition.x)
+  );
+  const giftCollisionY = valueRange(
+    Math.round(giftPosition.y),
+    Math.round(playerPosition.y)
+  );
   const giftCollision = giftCollisionX && giftCollisionY;
 
   if (giftCollision) {
@@ -137,8 +140,8 @@ function movePlayer() {
   }
 
   const mineCollision = minePositions.find((mine) => {
-    const mineCollisionX = mine.x == Math.round(playerPosition.x);
-    const mineCollisionY = mine.y == Math.round(playerPosition.y);
+    const mineCollisionX = valueRange(mine.x, Math.round(playerPosition.x));
+    const mineCollisionY = valueRange(mine.y, Math.round(playerPosition.y));
     return mineCollisionX && mineCollisionY;
   });
 
@@ -273,8 +276,6 @@ function magicRadar() {
     upLeft: undefined,
   };
 
-  radar = {};
-
   environmentPositions.forEach((pos) => {
     const upWay = {
       x: Math.round(playerPosition.x),
@@ -311,37 +312,43 @@ function magicRadar() {
     };
 
     if (pos.sign == "X") {
-      if (upWay.x == pos.x && upWay.y == pos.y) {
+      if (valueRange(upWay.x, pos.x) && valueRange(upWay.y, pos.y)) {
         nearCollisions.up = pos.sign;
       }
 
-      if (rightWay.x == pos.x && rightWay.y == pos.y) {
+      if (valueRange(rightWay.x, pos.x) && valueRange(rightWay.y, pos.y)) {
         nearCollisions.right = pos.sign;
       }
 
-      if (downWay.x == pos.x && downWay.y == pos.y) {
+      if (valueRange(downWay.x, pos.x) && valueRange(downWay.y, pos.y)) {
         nearCollisions.down = pos.sign;
       }
 
-      if (leftWay.x == pos.x && leftWay.y == pos.y) {
+      if (valueRange(leftWay.x, pos.x) && valueRange(leftWay.y, pos.y)) {
         nearCollisions.left = pos.sign;
       }
     }
 
     if (pos.sign == "-") {
-      if (UpRightWay.x == pos.x && UpRightWay.y == pos.y) {
+      if (valueRange(UpRightWay.x, pos.x) && valueRange(UpRightWay.y, pos.y)) {
         nearCollisions.upRight = true;
       }
 
-      if (DownRightWay.x == pos.x && DownRightWay.y == pos.y) {
+      if (
+        valueRange(DownRightWay.x, pos.x) &&
+        valueRange(DownRightWay.y, pos.y)
+      ) {
         nearCollisions.downRight = true;
       }
 
-      if (DownLeftWay.x == pos.x && DownLeftWay.y == pos.y) {
+      if (
+        valueRange(DownLeftWay.x, pos.x) &&
+        valueRange(DownLeftWay.y, pos.y)
+      ) {
         nearCollisions.downLeft = true;
       }
 
-      if (UpLefttWay.x == pos.x && UpLefttWay.y == pos.y) {
+      if (valueRange(UpLefttWay.x, pos.x) && valueRange(UpLefttWay.y, pos.y)) {
         nearCollisions.upLeft = true;
       }
     }
@@ -441,22 +448,22 @@ function minesReveal() {
       y: Math.round(playerPosition.y),
     };
 
-    if (uWay.x == pos.x && uWay.y == pos.y) {
+    if (valueRange(uWay.x, pos.x) && valueRange(uWay.y, pos.y)) {
       nearMines.upRight += 1;
       nearMines.upLeft += 1;
     }
 
-    if (rWay.x == pos.x && rWay.y == pos.y) {
+    if (valueRange(rWay.x, pos.x) && valueRange(rWay.y, pos.y)) {
       nearMines.upRight += 1;
       nearMines.downRight += 1;
     }
 
-    if (dWay.x == pos.x && dWay.y == pos.y) {
+    if (valueRange(dWay.x, pos.x) && valueRange(dWay.y, pos.y)) {
       nearMines.downRight += 1;
       nearMines.downLeft += 1;
     }
 
-    if (lWay.x == pos.x && lWay.y == pos.y) {
+    if (valueRange(lWay.x, pos.x) && valueRange(lWay.y, pos.y)) {
       nearMines.upLeft += 1;
       nearMines.downLeft += 1;
     }
@@ -478,4 +485,8 @@ function minePrediction() {
   if (radar.upLeft && minesField.upLeft != 0) {
     mineRadar("Up-Left", minesField.upLeft);
   }
+}
+
+function valueRange(value1, value2, tolerance = 1) {
+  return Math.abs(value1 - value2) <= tolerance;
 }

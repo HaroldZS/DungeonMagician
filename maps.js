@@ -27,7 +27,7 @@ maps.push(`
 maps.push(`
     O--XXXXXXX
     X-----XXXX
-    X--M--XXXX
+    XM-M--XXXX
     X-MXX-XXXX
     X--XX--XXX
     X-XXXX-XXX
@@ -38,11 +38,11 @@ maps.push(`
     `);
 maps.push(`
     I-----XXXX
-    XXXXX-XXXX
-    XX----XXXX
-    XX-XXXXXXX
+    XXXMX-XXXX
+    XX----MXXX
+    XX-XXXMXXX
     XX-----XXX
-    XXXXXX-XXX
+    XXM-XX-XXX
     XX-----XXX
     XX-XXXXXXX
     XX-----OXX
