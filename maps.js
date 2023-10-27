@@ -14,8 +14,8 @@ const images = {
 const maps = [];
 maps.push(`
     IXXXXXXXXX
-    -XXXXXXXXX
-    -XXXXXXXXX
+    --XXXXXXXX
+    -MXXXXXXXX
     -XXXXXXXXX
     -XXXXXXXXX
     -XXXXXXXXX
@@ -26,23 +26,23 @@ maps.push(`
   `);
 maps.push(`
     O--XXXXXXX
-    X-----XXXX
-    XM-M--XXXX
-    X-MXX-XXXX
-    X--XX--XXX
-    X-XXXX-XXX
-    XX-MXX--XX
-    XX--XXX-XX
-    XXXX---IXX
+    X----XXXXX
+    -M-M--XXXX
+    X-MXX--XXX
+    XX-----XXX
+    X---XM-XXX
+    XM-MXX--XX
+    XX--X-MM-X
+    X-M----IXX
     XXXXXXXXXX
     `);
 maps.push(`
     I-----XXXX
-    XXXMX-XXXX
-    XX----MXXX
-    XX-XXXMXXX
+    XXX-XM-XXX
+    XM----M-XX
+    X--XXX-MXX
     XX-----XXX
-    XXM-XX-XXX
+    X-MXXX--XX
     XX-----XXX
     XX-XXXXXXX
     XX-----OXX
