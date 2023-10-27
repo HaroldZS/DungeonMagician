@@ -73,6 +73,13 @@ function renderMap() {
           sign: "X",
         });
       }
+      if (col === "-") {
+        environmentPositions.push({
+          x: Math.round(posX),
+          y: Math.round(posY),
+          sign: "-",
+        });
+      }
       if (col === "M") {
         minePositions.push({
           x: Math.round(posX),
@@ -250,6 +257,10 @@ function magicRadar() {
     right: undefined,
     down: undefined,
     left: undefined,
+    upRight: undefined,
+    downRight: undefined,
+    downLeft: undefined,
+    upLeft: undefined,
   };
 
   environmentPositions.forEach((pos) => {
@@ -270,20 +281,55 @@ function magicRadar() {
       y: Math.round(playerPosition.y),
     };
 
-    if (upWay.x == pos.x && upWay.y == pos.y) {
-      nearCollisions.up = pos.sign;
-    }
+    const UpRightWay = {
+      x: Math.round(upWay.x + elementSize),
+      y: Math.round(upWay.y),
+    };
+    const DownRightWay = {
+      x: Math.round(downWay.x + elementSize),
+      y: Math.round(downWay.y),
+    };
+    const DownLeftWay = {
+      x: Math.round(downWay.x - elementSize),
+      y: Math.round(downWay.y),
+    };
+    const UpLefttWay = {
+      x: Math.round(upWay.x - elementSize),
+      y: Math.round(upWay.y),
+    };
 
-    if (rightWay.x == pos.x && rightWay.y == pos.y) {
-      nearCollisions.right = pos.sign;
-    }
+    if (pos.sign == "X") {
+      if (upWay.x == pos.x && upWay.y == pos.y) {
+        nearCollisions.up = pos.sign;
+      }
 
-    if (downWay.x == pos.x && downWay.y == pos.y) {
-      nearCollisions.down = pos.sign;
-    }
+      if (rightWay.x == pos.x && rightWay.y == pos.y) {
+        nearCollisions.right = pos.sign;
+      }
 
-    if (leftWay.x == pos.x && leftWay.y == pos.y) {
-      nearCollisions.left = pos.sign;
+      if (downWay.x == pos.x && downWay.y == pos.y) {
+        nearCollisions.down = pos.sign;
+      }
+
+      if (leftWay.x == pos.x && leftWay.y == pos.y) {
+        nearCollisions.left = pos.sign;
+      }
+    } else {
+      if (UpRightWay.x == pos.x && UpRightWay.y == pos.y) {
+        nearCollisions.upRight = true;
+      }
+
+      if (DownRightWay.x == pos.x && DownRightWay.y == pos.y) {
+        nearCollisions.downRight = true;
+      }
+
+      if (DownLeftWay.x == pos.x && DownLeftWay.y == pos.y) {
+        nearCollisions.downLeft = true;
+      }
+
+      if (UpLefttWay.x == pos.x && UpLefttWay.y == pos.y) {
+        nearCollisions.upLeft = true;
+      }
     }
   });
 
