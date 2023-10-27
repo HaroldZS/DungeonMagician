@@ -21,6 +21,7 @@ let minePositions = [];
 let level = 0;
 let lives = 3;
 let radar = {};
+let minesField = {};
 let startTime;
 let intervalTime;
 
@@ -116,7 +117,14 @@ function setCanvasSize() {
 }
 
 function movePlayer() {
+  radar = {};
   radar = magicRadar();
+  game.font = "24px 'Press Start 2P', sans-serif";
+  game.textAlign = "center";
+  game.textBaseline = "middle";
+
+  minesField = minesReveal();
+  minePrediction();
 
   const giftCollisionX =
     Math.round(giftPosition.x) == Math.round(playerPosition.x);
@@ -146,14 +154,6 @@ function movePlayer() {
     elementSize,
     elementSize
   );
-
-  game.font = "24px 'Press Start 2P', sans-serif";
-  game.textAlign = "center";
-  game.textBaseline = "middle";
-  mineRadar("Up-Right", 1);
-  mineRadar("Down-Right", 2);
-  mineRadar("Down-Left", 3);
-  mineRadar("Up-Left", 4);
 }
 
 function levelCompleted() {
@@ -398,5 +398,70 @@ function mineRadar(path, value) {
         playerPosition.y - elementSize / 2
       );
       break;
+  }
+}
+
+function minesReveal() {
+  const nearMines = {
+    upRight: 0,
+    downRight: 0,
+    downLeft: 0,
+    upLeft: 0,
+  };
+
+  minePositions.forEach((pos) => {
+    const upWay = {
+      x: Math.round(playerPosition.x),
+      y: Math.round(playerPosition.y - elementSize),
+    };
+    const rightWay = {
+      x: Math.round(playerPosition.x + elementSize),
+      y: Math.round(playerPosition.y),
+    };
+    const downWay = {
+      x: Math.round(playerPosition.x),
+      y: Math.round(playerPosition.y + elementSize),
+    };
+    const leftWay = {
+      x: Math.round(playerPosition.x - elementSize),
+      y: Math.round(playerPosition.y),
+    };
+
+    if (upWay.x == pos.x && upWay.y == pos.y) {
+      nearMines.upRight += 1;
+      nearMines.upLeft += 1;
+    }
+
+    if (rightWay.x == pos.x && rightWay.y == pos.y) {
+      nearMines.upRight += 1;
+      nearMines.downRight += 1;
+    }
+
+    if (downWay.x == pos.x && downWay.y == pos.y) {
+      nearMines.downRight += 1;
+      nearMines.downLeft += 1;
+    }
+
+    if (leftWay.x == pos.x && leftWay.y == pos.y) {
+      nearMines.upLeft += 1;
+      nearMines.downLeft += 1;
+    }
+  });
+
+  return nearMines;
+}
+
+function minePrediction() {
+  if (radar.upRight && minesField.upRight != 0) {
+    mineRadar("Up-Right", minesField.upRight);
+  }
+  if (radar.downRight && minesField.downRight != 0) {
+    mineRadar("Down-Right", minesField.downRight);
+  }
+  if (radar.downLeft && minesField.downLeft != 0) {
+    mineRadar("Down-Left", minesField.downLeft);
+  }
+  if (radar.upLeft && minesField.upLeft != 0) {
+    mineRadar("Up-Left", minesField.upLeft);
   }
 }

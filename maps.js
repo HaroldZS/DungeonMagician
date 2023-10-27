@@ -25,10 +25,10 @@ maps.push(`
   `);
 maps.push(`
     O--XXXXXXX
-    X--XXXXXXX
-    XX----XXXX
+    X-----XXXX
+    X--M--XXXX
     X-MXX-XXXX
-    X-XXX--XXX
+    X--XX--XXX
     X-XXXX-XXX
     XX-MXX--XX
     XX--XXX-XX
