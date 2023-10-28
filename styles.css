@@ -1,6 +1,6 @@
 body {
   background-color: #1f1f1f;
-  color: #FF8026;
+  color: #ff8026;
   font-family: "Press Start 2P";
   margin: 0;
   padding: 0;
@@ -33,7 +33,7 @@ button {
   background-color: #1f1f1f;
   border-radius: 8px;
   border-color: #ff6600;
-  color: #FF8026;
+  color: #ff8026;
   font-family: inherit;
   margin: 0;
   padding: 5px 20px;
@@ -61,7 +61,7 @@ p {
 
 @media (max-width: 440px) {
   button {
-    margin-top: 5px;
+    margin-top: 2px;
   }
 
   #up,
@@ -76,5 +76,5 @@ p {
 }
 
 p > span {
-  color: white
+  color: white;
 }
