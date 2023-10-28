@@ -4,6 +4,7 @@ const images = {
   O: "./assets/img/Gate.png",
   X: "./assets/img/Three.png",
   I: "./assets/img/Reward.png",
+  E: "./assets/img/CrystalBall.png",
   PLAYER: "./assets/img/DM-Magician.png",
   MINE: "./assets/img/MagicMine.png",
   BOMB_COLLISION: "./assets/img/Three.png",
@@ -14,7 +15,7 @@ const images = {
 const maps = [];
 maps.push(`
     IXXXXXXXXX
-    --XXXXXXXX
+    -EXXXXXXXX
     -MXXXXXXXX
     -XXXXXXXXX
     -XXXXXXXXX
@@ -27,22 +28,22 @@ maps.push(`
 maps.push(`
     O--XXXXXXX
     X----XXXXX
-    -M-M--XXXX
+    EM-M--XXXX
     X-MXX--XXX
     XX-----XXX
-    X---XM-XXX
+    X--EXM-XXX
     XM-MXX--XX
-    XX--X-MM-X
-    X-M----IXX
+    XX--XEMMEX
+    XEM----IXX
     XXXXXXXXXX
     `);
 maps.push(`
     I-----XXXX
     XXX-XM-XXX
-    XM----M-XX
+    XM--XEM-XX
     X--XXX-MXX
     XX-----XXX
-    X-MXXX--XX
+    XEMXXX--XX
     XX-----XXX
     XX-XXXXXXX
     XX-----OXX

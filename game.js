@@ -82,6 +82,13 @@ function renderMap() {
           sign: "-",
         });
       }
+      if (col === "E") {
+        environmentPositions.push({
+          x: Math.round(posX),
+          y: Math.round(posY),
+          sign: "E",
+        });
+      }
       if (col === "M") {
         minePositions.push({
           x: Math.round(posX),
@@ -177,6 +184,7 @@ function levelCompleted() {
   if (level < maps.length) {
     reload();
   } else {
+    collided = true;
     clearInterval(intervalTime);
     const recordTime = localStorage.getItem("record_time");
     const playerTime = Date.now() - startTime;
@@ -192,6 +200,11 @@ function levelCompleted() {
       localStorage.setItem("record_time", playerTime);
       result.innerHTML = "Let's go for a new record!";
     }
+
+    setTimeout(() => {
+      location.reload();
+      collided = false;
+    }, 3000);
   }
 }
 
@@ -222,6 +235,7 @@ function moveUp() {
   if (
     Math.round(playerPosition.y) >= Math.round(elementSize) &&
     radar.up != "X" &&
+    radar.up != "E" &&
     !collided
   ) {
     playerPosition.y -= elementSize;
@@ -233,6 +247,7 @@ function moveRight() {
   if (
     Math.round(playerPosition.x) < Math.round(canvasSize - elementSize) &&
     radar.right != "X" &&
+    radar.right != "E" &&
     !collided
   ) {
     playerPosition.x += elementSize;
@@ -244,6 +259,7 @@ function moveDown() {
   if (
     Math.round(playerPosition.y) < Math.round(canvasSize - elementSize) &&
     radar.down != "X" &&
+    radar.down != "E" &&
     !collided
   ) {
     playerPosition.y += elementSize;
@@ -255,6 +271,7 @@ function moveLeft() {
   if (
     Math.round(playerPosition.x) >= Math.round(elementSize) &&
     radar.left != "X" &&
+    radar.left != "E" &&
     !collided
   ) {
     playerPosition.x -= elementSize;
@@ -265,7 +282,7 @@ function moveLeft() {
 window.addEventListener("load", () => {
   loadAllImages().then(() => {
     const map = maps[level];
-    mapMatrix = map.match(/[IXOM\-]+/g).map((a) => a.split(""));
+    mapMatrix = map.match(/[IXOME\-]+/g).map((a) => a.split(""));
     setCanvasSize();
     startGame();
   });
@@ -318,7 +335,7 @@ function magicRadar() {
       y: Math.round(upWay.y),
     };
 
-    if (pos.sign == "X") {
+    if (pos.sign == "X" || pos.sign == "E") {
       if (valueRange(upWay.x, pos.x) && valueRange(upWay.y, pos.y)) {
         nearCollisions.up = pos.sign;
       }
@@ -336,7 +353,7 @@ function magicRadar() {
       }
     }
 
-    if (pos.sign == "-") {
+    if (pos.sign == "-" || pos.sign == "E") {
       if (valueRange(UpRightWay.x, pos.x) && valueRange(UpRightWay.y, pos.y)) {
         nearCollisions.upRight = true;
       }
